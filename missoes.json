@@ -1,0 +1,15 @@
+[
+  {
+    "id": "M-001",
+    "tarefa": "Coleta simples",
+    "area": [10.0, 20.0],
+    "duracao": 120
+  },
+  {
+    "id": "M-002",
+    "tarefa": "Analise de solo longa com fragmentacao",
+    "area": [-50.5, 180.1, -49.0, 181.2],
+    "duracao": 600,
+    "detalhes": "Esta e uma missao de teste que tem um payload muito longo para caber em 255 bytes, por isso temos de a fragmentar em pelo menos dois pacotes para que o protocolo funcione."
+  }
+]
