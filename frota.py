@@ -1,34 +1,36 @@
 import subprocess
 import sys
 import time
+import os
 
 def lancar_frota():
-    print("--- LANÇAMENTO DA FROTA DE ROVERS ---")
+    print("--- CENTRAL DE LANÇAMENTO DA FROTA ---")
+    print("A preparar sistemas...")
 
-    # 1. Defina aqui os seus rovers
+    # Nomes dos Rovers que queremos criar
     lista_rovers = [
         "Rover-Alpha",
         "Rover-Beta",
-        "Rover-Gamma",
-        "Rover-Delta"
+        "Rover-Gamma"
     ]
 
     python_exe = sys.executable
 
-    # 2. Loop para lançar cada um
-    for nome_rover in lista_rovers:
-        print(f">>> A ativar sistemas do {nome_rover}...")
+    for nome in lista_rovers:
+        print(f">>> A lançar {nome}...")
 
-        # Comando para abrir nova janela a correr o rover.py com o nome específico
-        # Windows: start "Titulo" cmd /k python rover.py "Nome"
-        comando = f'start "{nome_rover}" cmd /k "{python_exe} rover.py {nome_rover}"'
+        # Comando para Windows (abre nova janela CMD)
+        if os.name == 'nt':
+            cmd = f'start "{nome}" cmd /k "{python_exe} rover.py {nome}"'
+        # Comando para Linux (tenta xterm ou gnome-terminal)
+        else:
+            cmd = f'xterm -T "{nome}" -e "{python_exe} rover.py {nome}" &'
 
-        subprocess.Popen(comando, shell=True)
+        subprocess.Popen(cmd, shell=True)
+        time.sleep(0.5)
 
-        # Pequeno delay para não "entupir" a rede no arranque
-        time.sleep(1)
-
-    print("\nTodos os rovers foram lançados e estão a conectar-se à Nave-Mãe.")
+    print("\n 3 Rovers lançados!")
+    print("Vá a cada janela e pressione ENTER para pedir missões.")
 
 if __name__ == "__main__":
     lancar_frota()

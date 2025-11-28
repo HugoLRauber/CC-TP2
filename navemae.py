@@ -219,7 +219,7 @@ def main():
 
     threads.append(Thread(target=arranca_servico_udp, args=(database,)))
     threads.append(Thread(target=arranca_servico_tcp, args=(database,)))
-    # threads.append(Thread(target=arranca_monitor, args=(database,))) # Opcional se usar Ground Control
+    threads.append(Thread(target=arranca_monitor, args=(database,))) # Opcional se usar Ground Control
 
     # --- USA A NOVA FUNÇÃO IMPORTADA DE HTTP.py ---
     threads.append(Thread(target=arranca_api_http, args=(database,)))
