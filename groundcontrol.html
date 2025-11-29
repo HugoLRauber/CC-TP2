@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Ground Control - Pandora</title>
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .card { 
+            background: #161b22; border: 1px solid #30363d; padding: 15px; border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        .card h3 { margin-top: 0; color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 10px;}
+        .stat { display: flex; justify-content: space-between; margin: 5px 0; }
+        .val { font-weight: bold; }
+        .st-IDLE { color: #238636; }
+        .st-EM_MISSAO { color: #a371f7; animation: pulse 1.5s infinite; }
+        .st-CHARGING { color: #d29922; }
+        .st-OFFLINE { color: #da3633; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <h1>🪐 GROUND CONTROL <span style="font-size:0.5em; color:#58a6ff">LIVE FEED</span></h1>
+    <div id="grid" class="grid"></div>
+
+    <script>
+        async function update() {
+            try {
+                const res = await fetch('http://127.0.0.1:8080/api/telemetria');
+                const data = await res.json();
+                const grid = document.getElementById('grid');
+                grid.innerHTML = "";
+
+                if(Object.keys(data).length === 0) grid.innerHTML = "À espera de sinal...";
+
+                // Ordenar por nome
+                const keys = Object.keys(data).sort();
+
+                keys.forEach(k => {
+                    const r = data[k];
+                    const bat = r.bat || 0;
+                    const st = r.status || "OFFLINE";
+                    const pos = r.pos ? `[${r.pos[0]}, ${r.pos[1]}]` : "?";
+                    
+                    let batColor = bat > 50 ? '#238636' : (bat > 20 ? '#d29922' : '#da3633');
+
+                    grid.innerHTML += `
+                        <div class="card" style="border-left: 5px solid ${batColor}">
+                            <h3>🤖 ${r.id || k}</h3>
+                            <div class="stat"><span>Estado:</span> <span class="val st-${st}">${st}</span></div>
+                            <div class="stat"><span>Bateria:</span> <span class="val" style="color:${batColor}">${bat}%</span></div>
+                            <div class="stat"><span>Posição:</span> <span class="val">${pos}</span></div>
+                            <div class="stat" style="font-size:0.8em; margin-top:10px; color:#8b949e">
+                                IP: ${r.ip ? r.ip[1] : 'Unknown'}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch(e) {}
+            setTimeout(update, 1000); // Atualiza a cada 1 segundo
+        }
+        update();
+    </script>
+</body>
+</html>

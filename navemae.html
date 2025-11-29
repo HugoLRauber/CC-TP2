@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    body { background: #222; color: #fff; font-family: sans-serif; display: flex; }
+    .painel { padding: 20px; width: 50%; }
+    .card { background: #333; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    button { padding: 10px; cursor: pointer; font-weight: bold; }
+    .btn-charge { background: #ffcc00; color: #000; border: none; }
+    .btn-send { background: #00cc66; color: #fff; border: none; }
+    .status-IDLE { color: #0f0; }
+    .status-CHARGING { color: #ff0; }
+    .status-EM_MISSAO { color: #0ff; }
+</style>
+</head>
+<body>
+
+<div class="painel">
+    <h2>📡 Controlo de Missão</h2>
+    <div id="frota">A carregar...</div>
+</div>
+
+<div class="painel">
+    <h2>🗺️ Enviar Missão</h2>
+    <select id="selRover"></select> <br><br>
+    Tarefa: <input id="tarefa" value="Coleta"><br><br>
+    Duração (s): <input id="dur" type="number" value="10"><br><br>
+    <button class="btn-send" onclick="enviarMissao()">ENVIAR MISSÃO</button>
+</div>
+
+<script>
+let dadosGlobal = {};
+
+async function loop() {
+    try {
+        const r = await fetch('http://127.0.0.1:8080/api/global');
+        const d = await r.json();
+        dadosGlobal = d.frota;
+        renderFrota(d.frota);
+    } catch(e){}
+    setTimeout(loop, 1000);
+}
+
+function renderFrota(frota) {
+    const div = document.getElementById('frota');
+    const sel = document.getElementById('selRover');
+    
+    // Guardar seleção atual
+    const selVal = sel.value;
+    div.innerHTML = "";
+    sel.innerHTML = "";
+
+    for(let id in frota) {
+        const rover = frota[id];
+        const nome = rover.config.nome;
+        const bat = rover.telemetria.bat || 0;
+        const st = rover.estado_missao;
+
+        // Card Visual
+        div.innerHTML += `
+            <div class="card">
+                <h3>${nome} (ID ${id})</h3>
+                <p>Status: <b class="status-${st.split(':')[0]}">${st}</b></p>
+                <p>Bateria: ${bat}%</p>
+                <button class="btn-charge" onclick="carregar(${id})">⚡ CARREGAR (+5%)</button>
+            </div>
+        `;
+
+        // Dropdown
+        let opt = document.createElement('option');
+        opt.value = id;
+        opt.innerText = nome;
+        if(st !== "IDLE") opt.disabled = true; // Só permite enviar se IDLE
+        sel.appendChild(opt);
+    }
+    if(selVal) sel.value = selVal;
+}
+
+async function carregar(id) {
+    await fetch('http://127.0.0.1:8080/api/comando', {
+        method: 'POST', body: JSON.stringify({acao: "CHARGE", target_id: id})
+    });
+}
+
+async function enviarMissao() {
+    const id = document.getElementById('selRover').value;
+    const t = document.getElementById('tarefa').value;
+    const d = document.getElementById('dur').value;
+    
+    if(!id) return alert("Selecione um rover livre!");
+
+    await fetch('http://127.0.0.1:8080/api/comando', {
+        method: 'POST', 
+        body: JSON.stringify({
+            acao: "MISSAO", 
+            target_id: id,
+            missao: { id: "MANUAL", tarefa: t, duracao: d }
+        })
+    });
+}
+
+loop();
+</script>
+</body>
+</html>
