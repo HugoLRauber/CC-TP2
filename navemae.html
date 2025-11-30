@@ -1,106 +1,191 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 <head>
-<meta charset="UTF-8">
-<style>
-    body { background: #222; color: #fff; font-family: sans-serif; display: flex; }
-    .painel { padding: 20px; width: 50%; }
-    .card { background: #333; padding: 15px; margin: 10px 0; border-radius: 5px; }
-    button { padding: 10px; cursor: pointer; font-weight: bold; }
-    .btn-charge { background: #ffcc00; color: #000; border: none; }
-    .btn-send { background: #00cc66; color: #fff; border: none; }
-    .status-IDLE { color: #0f0; }
-    .status-CHARGING { color: #ff0; }
-    .status-EM_MISSAO { color: #0ff; }
-</style>
+    <meta charset="UTF-8">
+    <title>Comando Nave-Mãe</title>
+    <style>
+        body { background: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; display: flex; gap: 20px; padding: 20px; }
+        h2 { color: #bb86fc; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        
+        .painel { background: #1e1e1e; padding: 20px; border-radius: 10px; width: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        
+        /* Tabela de Rovers */
+        .rover-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: #2c2c2c; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 5px solid #555;
+        }
+        .rover-info div { margin-bottom: 5px; }
+        .st-IDLE { color: #00e676; font-weight: bold; }
+        .st-EM_MISSAO { color: #2979ff; font-weight: bold; animation: pulse 1.5s infinite; }
+        .st-CHARGING { color: #ffab00; font-weight: bold; }
+        .st-OFFLINE { color: #ff5252; }
+
+        button { cursor: pointer; padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; transition: 0.2s; }
+        .btn-charge { background: #ffab00; color: #000; }
+        .btn-charge:hover { background: #ffca28; }
+        
+        .btn-send { background: #bb86fc; color: #000; width: 100%; padding: 12px; font-size: 1.1em; margin-top: 15px; }
+        .btn-send:hover { background: #d0aaff; }
+        .btn-send:disabled { background: #555; color: #888; cursor: not-allowed; }
+
+        input, select { width: 100%; padding: 10px; margin: 5px 0 15px; background: #333; border: 1px solid #555; color: white; border-radius: 4px; }
+        label { color: #aaa; font-size: 0.9em; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+    </style>
 </head>
 <body>
 
-<div class="painel">
-    <h2>📡 Controlo de Missão</h2>
-    <div id="frota">A carregar...</div>
-</div>
+    <div class="painel">
+        <h2>📡 Estado da Frota</h2>
+        <div id="listaRovers">
+            <div style="text-align:center; color:#777; margin-top:50px">A procurar sinal dos rovers...</div>
+        </div>
+    </div>
 
-<div class="painel">
-    <h2>🗺️ Enviar Missão</h2>
-    <select id="selRover"></select> <br><br>
-    Tarefa: <input id="tarefa" value="Coleta"><br><br>
-    Duração (s): <input id="dur" type="number" value="10"><br><br>
-    <button class="btn-send" onclick="enviarMissao()">ENVIAR MISSÃO</button>
-</div>
+    <div class="painel">
+        <h2>🗺️ Atribuir Missão</h2>
+        
+        <label>1. Selecionar Rover (Apenas IDLE):</label>
+        <select id="selRover">
+            <option value="">A aguardar dados...</option>
+        </select>
+
+        <label>2. Configurar Tarefa:</label>
+        <input type="text" id="tarefa" value="Coleta de Amostras" placeholder="Ex: Fotografia, Sondagem...">
+
+        <label>3. Duração (segundos):</label>
+        <input type="number" id="duracao" value="15" min="5" max="120">
+
+        <button id="btnEnviar" class="btn-send" onclick="enviarMissao()">🚀 ENVIAR ORDEM</button>
+        <div id="msgStatus" style="margin-top: 10px; text-align: center; color: #aaa;"></div>
+    </div>
 
 <script>
-let dadosGlobal = {};
+    const API_URL = "http://127.0.0.1:8080/api";
+    let dadosCache = {};
 
-async function loop() {
-    try {
-        const r = await fetch('http://127.0.0.1:8080/api/global');
-        const d = await r.json();
-        dadosGlobal = d.frota;
-        renderFrota(d.frota);
-    } catch(e){}
-    setTimeout(loop, 1000);
-}
-
-function renderFrota(frota) {
-    const div = document.getElementById('frota');
-    const sel = document.getElementById('selRover');
-    
-    // Guardar seleção atual
-    const selVal = sel.value;
-    div.innerHTML = "";
-    sel.innerHTML = "";
-
-    for(let id in frota) {
-        const rover = frota[id];
-        const nome = rover.config.nome;
-        const bat = rover.telemetria.bat || 0;
-        const st = rover.estado_missao;
-
-        // Card Visual
-        div.innerHTML += `
-            <div class="card">
-                <h3>${nome} (ID ${id})</h3>
-                <p>Status: <b class="status-${st.split(':')[0]}">${st}</b></p>
-                <p>Bateria: ${bat}%</p>
-                <button class="btn-charge" onclick="carregar(${id})">⚡ CARREGAR (+5%)</button>
-            </div>
-        `;
-
-        // Dropdown
-        let opt = document.createElement('option');
-        opt.value = id;
-        opt.innerText = nome;
-        if(st !== "IDLE") opt.disabled = true; // Só permite enviar se IDLE
-        sel.appendChild(opt);
+    async function atualizarDashboard() {
+        try {
+            const res = await fetch(API_URL + '/global');
+            const dados = await res.json();
+            const frota = dados.frota || {};
+            
+            renderListaRovers(frota);
+            atualizarDropdown(frota);
+            
+        } catch(e) { console.error("Erro API:", e); }
+        
+        setTimeout(atualizarDashboard, 1000); // Atualiza a cada 1s
     }
-    if(selVal) sel.value = selVal;
-}
 
-async function carregar(id) {
-    await fetch('http://127.0.0.1:8080/api/comando', {
-        method: 'POST', body: JSON.stringify({acao: "CHARGE", target_id: id})
-    });
-}
+    function renderListaRovers(frota) {
+        const container = document.getElementById('listaRovers');
+        container.innerHTML = "";
 
-async function enviarMissao() {
-    const id = document.getElementById('selRover').value;
-    const t = document.getElementById('tarefa').value;
-    const d = document.getElementById('dur').value;
-    
-    if(!id) return alert("Selecione um rover livre!");
+        if(Object.keys(frota).length === 0) {
+            container.innerHTML = "<div style='text-align:center; color:#777'>Nenhum rover detetado.</div>";
+            return;
+        }
 
-    await fetch('http://127.0.0.1:8080/api/comando', {
-        method: 'POST', 
-        body: JSON.stringify({
-            acao: "MISSAO", 
-            target_id: id,
-            missao: { id: "MANUAL", tarefa: t, duracao: d }
-        })
-    });
-}
+        // Ordenar por ID
+        Object.keys(frota).sort().forEach(key => {
+            const r = frota[key];
+            const id = r.id || key;
+            const bat = r.bat || 0;
+            const status = r.status || "OFFLINE";
+            
+            // Cor da borda baseada na bateria
+            let borderCor = bat > 20 ? '#555' : '#ff5252';
+            if (status === 'EM_MISSAO') borderCor = '#2979ff';
 
-loop();
+            const html = `
+                <div class="rover-item" style="border-left-color: ${borderCor}">
+                    <div class="rover-info">
+                        <div style="font-size: 1.1em; font-weight: bold;">Rover-${id}</div>
+                        <div>Status: <span class="st-${status}">${status}</span></div>
+                        <div>Bateria: ${bat}%</div>
+                    </div>
+                    <button class="btn-charge" onclick="carregar(${id})">⚡ CARREGAR</button>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+    }
+
+    function atualizarDropdown(frota) {
+        const sel = document.getElementById('selRover');
+        const valorAtual = sel.value;
+        sel.innerHTML = "";
+
+        let algumDisponivel = false;
+
+        Object.keys(frota).sort().forEach(key => {
+            const r = frota[key];
+            const status = r.status || "OFFLINE";
+            
+            let opt = document.createElement('option');
+            opt.value = r.id || key;
+            
+            let texto = `Rover-${opt.value} (${status})`;
+            if(status !== "IDLE") {
+                opt.disabled = true;
+                texto += " - Ocupado";
+            } else {
+                algumDisponivel = true;
+            }
+            
+            opt.innerText = texto;
+            sel.appendChild(opt);
+        });
+
+        if (valorAtual) sel.value = valorAtual;
+        
+        // Desativar botão se não houver rovers livres
+        document.getElementById('btnEnviar').disabled = !algumDisponivel;
+    }
+
+    async function carregar(id) {
+        if(!confirm(`Mandar carregar o Rover ${id}?`)) return;
+        
+        await fetch(API_URL + '/enviar_missao', {
+            method: 'POST',
+            body: JSON.stringify({ acao: "CHARGE", target_id: id })
+        });
+    }
+
+    async function enviarMissao() {
+        const id = document.getElementById('selRover').value;
+        const tarefa = document.getElementById('tarefa').value;
+        const dur = document.getElementById('duracao').value;
+
+        if(!id) return alert("Selecione um rover válido!");
+
+        const statusDiv = document.getElementById('msgStatus');
+        statusDiv.innerText = "A enviar...";
+
+        try {
+            const res = await fetch(API_URL + '/enviar_missao', {
+                method: 'POST',
+                body: JSON.stringify({
+                    acao: "MISSAO",
+                    target_id: id,
+                    missao: { tarefa: tarefa, duracao: dur, id: "MANUAL-" + Date.now() }
+                })
+            });
+            const json = await res.json();
+            
+            if(res.ok) statusDiv.innerText = "✅ Missão enviada!";
+            else statusDiv.innerText = "❌ Erro: " + json.erro;
+            
+        } catch(e) {
+            statusDiv.innerText = "❌ Erro de conexão.";
+        }
+    }
+
+    // Iniciar
+    atualizarDashboard();
 </script>
+
 </body>
 </html>
