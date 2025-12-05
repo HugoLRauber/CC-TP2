@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<style>
+    body { background: #0d1117; color: #c9d1d9; font-family: monospace; padding: 20px; }
+    .container { display: flex; gap: 20px; }
+    .frota { flex: 2; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+    .historico { flex: 1; background: #161b22; padding: 15px; border-radius: 8px; height: 90vh; overflow-y: auto; }
+    .card { background: #21262d; border: 1px solid #30363d; padding: 15px; border-radius: 6px; }
+    .val { color: #fff; font-weight: bold; }
+    .log-item { border-bottom: 1px solid #333; padding: 8px 0; font-size: 0.85em; }
+    .log-success { color: #238636; }
+</style>
+</head>
+<body>
+    <h1>🪐 GROUND CONTROL <span style="color:#238636">LIVE</span></h1>
+    
+    <div class="container">
+        <div id="frota" class="frota">A carregar...</div>
+        
+        <div class="historico">
+            <h3>📜 Histórico de Missões</h3>
+            <select id="selRover" onchange="renderHist()" style="width:100%; padding:5px; background:#000; color:#fff; margin-bottom:10px;"></select>
+            <div id="histContent"></div>
+        </div>
+    </div>
+
+<script>
+    let globalData = {};
+
+    async function loop() {
+        try {
+            const r = await fetch('http://127.0.0.1:8080/api/global');
+            const d = await r.json();
+            globalData = d.frota || {};
+            renderFrota();
+            updateDropdown();
+            renderHist();
+        } catch(e){}
+        setTimeout(loop, 1000);
+    }
+
+    function renderFrota() {
+        const div = document.getElementById('frota');
+        div.innerHTML = "";
+        
+        Object.keys(globalData).sort().forEach(key => {
+            const r = globalData[key];
+            const nome = r.nome || `Rover-${r.id}`;
+            // MOSTRAR 3D
+            const pos = r.pos ? `X:${r.pos[0]} Y:${r.pos[1]} Z:${r.pos[2]}` : "?";
+            const batColor = r.bat > 20 ? '#238636' : 'red';
+
+            div.innerHTML += `
+                <div class="card" style="border-top: 3px solid ${batColor}">
+                    <h3>${nome}</h3>
+                    <p>Estado: <b>${r.status}</b></p>
+                    <p>Bateria: <span style="color:${batColor}">${r.bat}%</span></p>
+                    <p>Posição: <small>${pos}</small></p>
+                    <p style="color:#555; font-size:0.8em">${r.ip}</p>
+                </div>
+            `;
+        });
+    }
+
+    function updateDropdown() {
+        const sel = document.getElementById('selRover');
+        Object.keys(globalData).forEach(k => {
+            if(!sel.querySelector(`option[value="${k}"]`)) {
+                let opt = document.createElement('option');
+                opt.value = k;
+                opt.innerText = globalData[k].nome || k;
+                sel.appendChild(opt);
+            }
+        });
+    }
+
+    function renderHist() {
+        const key = document.getElementById('selRover').value;
+        const div = document.getElementById('histContent');
+        if(!key || !globalData[key]) return;
+
+        const hist = globalData[key].historico || [];
+        div.innerHTML = "";
+        
+        if(hist.length === 0) div.innerHTML = "Sem histórico.";
+        
+        hist.slice().reverse().forEach(h => {
+            div.innerHTML += `
+                <div class="log-item">
+                    [${h.ts}] <b>${h.id}</b> <br>
+                    <span class="log-success">CONCLUÍDA</span>
+                </div>
+            `;
+        });
+    }
+
+    loop();
+</script>
+</body>
+</html>

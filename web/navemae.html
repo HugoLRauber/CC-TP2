@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Comando Nave-Mãe</title>
+    <style>
+        body { background: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; display: flex; gap: 20px; padding: 20px; }
+        .painel { background: #1e1e1e; padding: 20px; border-radius: 10px; width: 50%; }
+        .rover-item { background: #2c2c2c; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 5px solid #555; display: flex; justify-content: space-between; align-items: center;}
+        .st-IDLE { color: #00e676; } .st-EM_MISSAO { color: #2979ff; } .st-CHARGING { color: #ffab00; }
+        button { cursor: pointer; padding: 8px 15px; border-radius: 4px; font-weight: bold; border: none; }
+        .btn-charge { background: #ffab00; color: #000; }
+        .btn-send { background: #bb86fc; width: 100%; margin-top: 15px; padding: 12px; font-size: 1.1em; }
+        input, select, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; background: #333; border: 1px solid #555; color: white; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <div class="painel">
+        <h2>📡 Estado da Frota</h2>
+        <div id="listaRovers">A procurar...</div>
+    </div>
+
+    <div class="painel">
+        <h2>🗺️ Configurar Missão</h2>
+        <label>1. Rover Alvo:</label> <select id="selRover"></select>
+        <label>2. Tipo de Missão:</label>
+        <select id="tipoMissao">
+            <option value="Exploracao">🔭 Exploração</option>
+            <option value="Coleta">🪨 Coleta</option>
+            <option value="Fotografia">📸 Fotografia</option>
+        </select>
+        <label>3. Detalhes:</label> <textarea id="descManual" rows="2"></textarea>
+        <label>4. Duração (s):</label> <input type="number" id="duracao" value="15">
+        <button id="btnEnviar" class="btn-send" onclick="enviarMissao()">🚀 ENVIAR</button>
+        <div id="msgStatus" style="margin-top: 10px; text-align: center;"></div>
+    </div>
+
+<script>
+    const API_URL = "http://127.0.0.1:8080/api";
+
+    async function loop() {
+        try {
+            const res = await fetch(API_URL + '/global');
+            const dados = await res.json();
+            render(dados.frota || {});
+        } catch(e){}
+        setTimeout(loop, 1000);
+    }
+
+    function render(frota) {
+        const div = document.getElementById('listaRovers');
+        const sel = document.getElementById('selRover');
+        const valSel = sel.value;
+        div.innerHTML = ""; sel.innerHTML = "";
+
+        Object.keys(frota).sort().forEach(k => {
+            const r = frota[k];
+            // Usa o nome da config se existir, senão Rover-ID
+            const nome = r.nome || `Rover-${r.id}`;
+            const bat = r.bat || 0;
+            const status = r.status || "OFFLINE";
+
+            div.innerHTML += `
+                <div class="rover-item" style="border-left-color: ${bat < 20 ? 'red' : 'green'}">
+                    <div>
+                        <div style="font-weight:bold; font-size:1.1em">${nome}</div>
+                        <div>Status: <span class="st-${status}">${status}</span> | Bat: ${bat}%</div>
+                    </div>
+                    <button class="btn-charge" onclick="carregar(${r.id})">⚡ CARREGAR</button>
+                </div>
+            `;
+
+            let opt = document.createElement('option');
+            opt.value = r.id;
+            opt.innerText = nome;
+            if(status !== "IDLE") { opt.disabled = true; opt.innerText += " (Ocupado)"; }
+            sel.appendChild(opt);
+        });
+        if(valSel) sel.value = valSel;
+    }
+
+    async function carregar(id) {
+        await fetch(API_URL + '/enviar_missao', {
+            method: 'POST', body: JSON.stringify({ acao: "CHARGE", target_id: id })
+        });
+    }
+
+    async function enviarMissao() {
+        const id = document.getElementById('selRover').value;
+        const tipo = document.getElementById('tipoMissao').value;
+        const desc = document.getElementById('descManual').value;
+        const dur = document.getElementById('duracao').value;
+
+        if(!id) return alert("Selecione um rover!");
+
+        await fetch(API_URL + '/enviar_missao', {
+            method: 'POST',
+            body: JSON.stringify({
+                acao: "MISSAO",
+                target_id: id,
+                missao: { tarefa: `${tipo}: ${desc}`, duracao: dur, id: "M-" + Date.now() }
+            })
+        });
+        document.getElementById('msgStatus').innerText = "Ordem Enviada.";
+    }
+    loop();
+</script>
+</body>
+</html>

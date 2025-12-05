@@ -1,4 +1,0 @@
-{
-  "1": { "nome": "Rover-Alpha", "ip": "127.0.0.1", "porta_udp": 6001, "porta_tcp": 5555 },
-  "2": { "nome": "Rover-Beta",  "ip": "127.0.0.1", "porta_udp": 6002, "porta_tcp": 5555 }
-}
