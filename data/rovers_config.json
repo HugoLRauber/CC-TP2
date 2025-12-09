@@ -1,0 +1,20 @@
+{
+  "1": { 
+      "nome": "Rover-Alpha", 
+      "ip": "10.0.1.20", 
+      "porta_udp": 6001, 
+      "porta_tcp": 5555 
+  },
+  "2": { 
+      "nome": "Rover-Beta",  
+      "ip": "10.0.2.20", 
+      "porta_udp": 6002, 
+      "porta_tcp": 5555 
+  },
+  "3": { 
+      "nome": "Rover-Gamma",  
+      "ip": "10.0.3.20", 
+      "porta_udp": 6003, 
+      "porta_tcp": 5555 
+  }
+}

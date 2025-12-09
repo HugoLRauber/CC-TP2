@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Ground Control</title>
+    <style>
+        body { background: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', monospace; padding: 20px; }
+        .container { display: flex; gap: 20px; }
+        .frota { flex: 2; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+        .historico { flex: 1; background: #161b22; padding: 15px; border-radius: 8px; height: 90vh; overflow-y: auto; border: 1px solid #30363d; }
+        .card { background: #21262d; border: 1px solid #30363d; padding: 15px; border-radius: 6px; position: relative; }
+        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
+        progress { width: 100%; height: 12px; border-radius: 5px; background: #333; }
+        progress::-webkit-progress-bar { background-color: #0d1117; border-radius: 5px; border: 1px solid #333; }
+        progress::-webkit-progress-value { background-color: #2f81f7; border-radius: 5px; transition: width 0.5s ease-in-out; }
+    </style>
+</head>
+<body>
+<h1>🪐 GROUND CONTROL <span style="color:#2f81f7">LIVE</span></h1>
+
+<div class="container">
+    <div id="frota" class="frota">A aguardar frota...</div>
+
+    <div class="historico">
+        <h3>📜 Histórico de Missões</h3>
+        <select id="selRover" onchange="renderHist()" style="width:100%; padding:8px; background:#0d1117; color:#fff; border:1px solid #30363d; margin-bottom:15px; border-radius:4px;"></select>
+        <div id="histContent" style="color:#8b949e">Selecione um rover...</div>
+    </div>
+</div>
+
+<script>
+    let globalData = {};
+    const API_BASE = "/api"; 
+
+    async function loop() {
+        try {
+            const r = await fetch(API_BASE + '/global');
+            const d = await r.json();
+            globalData = d.frota || d; 
+            renderFrota();
+            updateDropdown();
+            renderHist();
+        } catch(e){ console.log("A aguardar API...", e); }
+        setTimeout(loop, 1000);
+    }
+
+    function renderFrota() {
+        const div = document.getElementById('frota');
+        div.innerHTML = "";
+
+        const chaves = Object.keys(globalData).sort();
+        if (chaves.length === 0) { div.innerHTML = "Sem rovers ligados."; return; }
+
+        chaves.forEach(key => {
+            const r = globalData[key];
+            const nome = r.nome || `Rover-${r.id}`;
+            const pos = r.pos ? `X:${parseInt(r.pos[0])} Y:${parseInt(r.pos[1])}` : "Desconhecida";
+
+            // Cores do Status Geral
+            let corStatus = '#8b949e'; // Cinza (Default/Desconectado)
+            if(r.status === 'EM_MISSAO') corStatus = '#2f81f7'; // Azul
+            else if(r.status === 'CHARGING') corStatus = '#d29922'; // Laranja
+            else if(r.status === 'IDLE') corStatus = '#238636'; // Verde
+            else if(r.status === 'DESCONECTADO') corStatus = '#8b949e'; // Cinza
+
+            let val = Number(r.progresso);
+            if (isNaN(val)) val = 0;
+            if (val > 100) val = 100;
+
+            // --- CORREÇÃO DA COR DO PROGRESSO ---
+            // Se estiver a carregar (CHARGING) ou parado (IDLE), o texto da percentagem fica VERDE.
+            // Apenas se estiver em missão fica AZUL.
+            let corProgresso = (r.status === 'EM_MISSAO') ? '#2f81f7' : '#238636';
+
+            let htmlProgresso = `
+                <div style="margin-top:15px; background:#161b22; padding:10px; border-radius:4px; border:1px solid #30363d">
+                    <div style="font-size:0.8em; color:#8b949e; display:flex; justify-content:space-between; margin-bottom:5px">
+                        <span>🎯 PROGRESSO</span>
+                        <span style="color:${corProgresso}; font-weight:bold">${val}%</span>
+                    </div>
+                    <progress value="${val}" max="100"></progress>
+                </div>
+            `;
+
+            div.innerHTML += `
+                <div class="card" style="border-top: 3px solid ${corStatus}">
+                    <div style="display:flex; justify-content:space-between; align-items:center">
+                        <h3 style="margin:0; color:#fff">📡 ${nome}</h3>
+                        <span class="status-badge" style="background:${corStatus}22; color:${corStatus}">${r.status}</span>
+                    </div>
+
+                    <div style="margin-top:10px; font-size:0.9em; color:#8b949e">
+                        <p style="margin:5px 0">🔋 Bateria: <b style="color:${r.bat > 20 ? '#fff' : '#f85149'}">${r.bat}%</b></p>
+                        <p style="margin:5px 0">📍 Posição: <span style="color:#fff">${pos}</span></p>
+                        <p style="margin:5px 0; font-size:0.8em">IP: ${r.ip || 'N/A'}</p>
+                    </div>
+
+                    ${htmlProgresso}
+                </div>
+            `;
+        });
+    }
+
+    function updateDropdown() {
+        const sel = document.getElementById('selRover');
+        const chaves = Object.keys(globalData).sort();
+        
+        chaves.forEach(k => {
+            if(!sel.querySelector(`option[value="${k}"]`)) {
+                let opt = document.createElement('option');
+                opt.value = k;
+                opt.innerText = globalData[k].nome || k;
+                sel.appendChild(opt);
+            }
+        });
+        if (!sel.value && chaves.length > 0) sel.value = chaves[0];
+    }
+
+    function renderHist() {
+        const sel = document.getElementById('selRover');
+        const key = sel.value;
+        const div = document.getElementById('histContent');
+
+        if(!key || !globalData[key]) return;
+
+        const hist = globalData[key].historico || [];
+        div.innerHTML = "";
+        
+        div.innerHTML += `<div style="margin-bottom:10px; border-bottom:1px solid #333; padding-bottom:5px; color:#fff">Log de <b>${globalData[key].nome}</b></div>`;
+
+        if(hist.length === 0) { div.innerHTML += "<i>Nenhuma missão concluída.</i>"; return; }
+
+        hist.slice().reverse().forEach(h => {
+            div.innerHTML += `
+                <div class="log-item" style="border-bottom: 1px solid #333; padding: 5px 0; font-size: 0.9em;">
+                    <span style="color:#7d8590;">[${h.ts}]</span>
+                    <b style="color:#e6edf3">${h.id}</b> 
+                    <span style="color: #238636; float:right;">✅ SUCESSO</span>
+                </div>
+            `;
+        });
+    }
+    loop();
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Comando Nave-Mãe</title>
+    <style>
+        body { background: #121212; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; display: flex; gap: 20px; padding: 20px; }
+        .painel { background: #1e1e1e; padding: 20px; border-radius: 10px; width: 50%; }
+        
+        .rover-item { background: #2c2c2c; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 5px solid #555; display: flex; justify-content: space-between; align-items: center;}
+        
+        /* Cores dos Status */
+        .st-IDLE { color: #00e676; font-weight: bold; } 
+        .st-EM_MISSAO { color: #2979ff; font-weight: bold; } 
+        .st-CHARGING { color: #ffab00; font-weight: bold; } 
+        .st-OFFLINE { color: #ff5252; font-weight: bold; }
+        .st-DESCONECTADO { color: #9e9e9e; font-style: italic; }
+
+        button { cursor: pointer; padding: 8px 15px; border-radius: 4px; font-weight: bold; border: none; }
+        .btn-charge { background: #ffab00; color: #000; }
+        .btn-send { background: #bb86fc; width: 100%; margin-top: 15px; padding: 12px; font-size: 1.1em; }
+        
+        input, select, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; background: #333; border: 1px solid #555; color: white; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="painel">
+    <h2>📡 Estado da Frota (Nave-Mãe)</h2>
+    <div id="listaRovers">A procurar...</div>
+</div>
+
+<div class="painel">
+    <h2>🗺️ Configurar Missão</h2>
+    <label>1. Rover Alvo:</label>
+    <select id="selRover"><option value="">Aguardando dados...</option></select>
+
+    <label>2. Tipo de Missão:</label>
+    <select id="tipoMissao" onchange="autoPreencher()">
+        <option value="">-- Selecione --</option>
+        <option value="M-001">🪨 M-001: Coleta Mineral</option>
+        <option value="M-002">📸 M-002: Fotografia Alta Res</option>
+        <option value="M-003">📉 M-003: Análise Sísmica</option>
+        <option value="M-004">🔭 M-004: Mapeamento Visual</option>
+    </select>
+
+    <label>3. ID da Missão:</label>
+    <input type="text" id="idMissao" disabled value="---" style="color: #bb86fc; font-weight: bold;">
+
+    <label>4. Detalhes:</label>
+    <textarea id="descManual" rows="2" placeholder="Descrição..."></textarea>
+
+    <input type="number" id="duracao" value="15" placeholder="Duração (s)">
+    <button id="btnEnviar" class="btn-send" onclick="enviarMissao()">🚀 ENVIAR ORDEM</button>
+    <div id="msgStatus" style="margin-top: 10px; text-align: center;"></div>
+</div>
+
+<script>
+    // Caminho relativo para funcionar em qualquer IP
+    const API_BASE = "/api";
+
+    const templates = {
+        "M-001": { tarefa: "Coleta Mineral", texto: "Coletar Minerais do solo.", tempo: 15 },
+        "M-002": { tarefa: "Fotografia de Alta Resolucao", texto: "Capturar imagem.", tempo: 25 },
+        "M-003": { tarefa: "Analise Sismica", texto: "Leitura de sensores.", tempo: 20 },
+        "M-004": { tarefa: "Mapeamento Visual", texto: "Dados de imagem termica.", tempo: 30 }
+    };
+
+    function autoPreencher() {
+        const id = document.getElementById('tipoMissao').value;
+        if (templates[id]) {
+            document.getElementById('idMissao').value = id;
+            document.getElementById('descManual').value = templates[id].texto;
+            document.getElementById('duracao').value = templates[id].tempo;
+        }
+    }
+
+    async function enviarMissao() {
+        const idRover = document.getElementById('selRover').value;
+        const idMissao = document.getElementById('idMissao').value;
+        if(!idRover || !idMissao || idMissao === "---") return alert("Preencha os campos!");
+
+        const dados = {
+            acao: "MISSAO",
+            target_id: idRover,
+            missao: {
+                id: idMissao,
+                tarefa: templates[idMissao] ? templates[idMissao].tarefa : "Manual",
+                duracao: document.getElementById('duracao').value
+            }
+        };
+
+        try {
+            await fetch(API_BASE + '/enviar_missao', {
+                method: 'POST',
+                body: JSON.stringify(dados)
+            });
+            document.getElementById('msgStatus').innerText = "Ordem Enviada!";
+            setTimeout(() => document.getElementById('msgStatus').innerText = "", 3000);
+        } catch(e) { alert("Erro ao enviar: " + e); }
+    }
+
+    async function carregar(id) {
+        try {
+            await fetch(API_BASE + '/enviar_missao', {
+                method: 'POST', body: JSON.stringify({ acao: "CHARGE", target_id: id })
+            });
+            alert("Ordem de carga enviada.");
+        } catch(e) { alert("Erro: " + e); }
+    }
+
+    async function loop() {
+        try {
+            const res = await fetch(API_BASE + '/global');
+            const dados = await res.json();
+            render(dados.frota || {});
+        } catch(e){}
+        setTimeout(loop, 1000);
+    }
+
+    function render(frota) {
+        const div = document.getElementById('listaRovers');
+        const sel = document.getElementById('selRover');
+        const valSel = sel.value; 
+
+        div.innerHTML = "";
+        
+        // Limpa o select se não houver rovers válidos
+        if (Object.keys(frota).length === 0) { 
+            div.innerHTML = "Sem rovers."; 
+            sel.innerHTML = "<option value=''>Aguardando dados...</option>";
+            return; 
+        }
+
+        // Mantém a opção default se ainda não tiver selecionado nada
+        if (sel.options.length <= 1 && sel.value === "") sel.innerHTML = "";
+
+        const rovers = Object.keys(frota).sort();
+
+        rovers.forEach(k => {
+            const r = frota[k];
+            // Se o status não vier (ainda não conectado), assume DESCONECTADO
+            const status = r.status || "DESCONECTADO";
+            
+            // Define a cor da borda lateral
+            let corBorda = '#555'; // Cinza (Desconectado)
+            if (status === 'IDLE') corBorda = '#00e676'; // Verde
+            else if (status === 'EM_MISSAO') corBorda = '#2979ff'; // Azul
+            else if (status === 'CHARGING') corBorda = '#ffab00'; // Laranja
+            else if (status === 'OFFLINE') corBorda = '#ff5252'; // Vermelho
+            
+            // Se bateria < 20 e conectado, fica vermelho
+            if (status !== 'DESCONECTADO' && r.bat < 20) corBorda = '#ff5252';
+
+            div.innerHTML += `
+                <div class="rover-item" style="border-left-color: ${corBorda}">
+                    <div>
+                        <div style="font-weight:bold;">${r.nome}</div>
+                        <div style="font-size:0.9em">
+                            Status: <span class="st-${status}">${status}</span> 
+                            ${status !== 'DESCONECTADO' ? `| Bat: ${r.bat}%` : ''}
+                        </div>
+                    </div>
+                    ${status !== 'DESCONECTADO' ? `<button class="btn-charge" onclick="carregar(${r.id})">⚡</button>` : ''}
+                </div>
+            `;
+
+            // Adiciona ao dropdown apenas se já não existir
+            if (!sel.querySelector(`option[value="${r.id}"]`)) {
+                let opt = document.createElement('option');
+                opt.value = r.id;
+                opt.innerText = r.nome;
+                sel.appendChild(opt);
+            }
+        });
+        
+        // Tenta manter a seleção do utilizador
+        if(valSel) sel.value = valSel;
+    }
+
+    loop();
+</script>
+</body>
+</html>
