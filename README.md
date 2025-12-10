@@ -58,7 +58,8 @@ The simulation runs inside the **CORE Network Emulator** with the following node
 
 ## 📂 Project Structure
 
-bash
+bash 
+``` 
 TP2/
 ├── logs/                  # Auto-generated logs (timestamped)
 ├── src/
@@ -74,6 +75,7 @@ TP2/
 │   ├── groundcontrol.html # Dashboard Frontend
 │   └── navemae.html       # Mothership Admin Panel
 └── run_core.sh            # 🚀 ALL-IN-ONE LAUNCH SCRIPT
+```
 
 ## 🚀 How to Run
 
