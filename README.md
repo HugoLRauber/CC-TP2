@@ -12,10 +12,10 @@ The system implements a custom **Reliable UDP Protocol** (Application Layer) cap
 
 ## 📸 Screenshots
 
-| CORE Topology | Ground Control Dashboard |
+| CORE Topology | Ground Control Dashboard | NaveMae DashBoard |
 |:---:|:---:|
-| ![Topology](https://via.placeholder.com/400x200?text=Insert+Topology+Here) | ![Dashboard](https://via.placeholder.com/400x200?text=Insert+Dashboard+Here) |
-| *Network Topology running in CORE* | *Real-time telemetry and control* |
+| ![Topology]([https://via.placeholder.com/400x200?text=Insert+Topology+Here](https://github.com/HugoLRauber/CC-TP2/issues/1#issue-3713121175)) | ![Dashboard]([https://via.placeholder.com/400x200?text=Insert+Dashboard+Here](https://github.com/HugoLRauber/CC-TP2/issues/3#issue-3713122449)) | ![NaveMae](https://github.com/HugoLRauber/CC-TP2/issues/2#issue-3713122088)
+| *Network Topology running in CORE* | *Real-time telemetry and control* | *Mothership real-time orders to the rovers* |
 
 ---
 
