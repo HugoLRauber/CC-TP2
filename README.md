@@ -27,6 +27,7 @@ The system implements a custom **Reliable UDP Protocol** (Application Layer) cap
 ### 3. NaveMae Dashboard
 ![NaveMae](./prints/NaveMae.png)
 *Mothership real-time orders to the rovers*
+
 ---
 
 ## 🌟 Key Features
