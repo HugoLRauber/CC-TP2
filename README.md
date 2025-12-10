@@ -58,7 +58,7 @@ The simulation runs inside the **CORE Network Emulator** with the following node
 
 ## 📂 Project Structure
 
-```bash
+## bash
 TP2/
 ├── logs/                  # Auto-generated logs (timestamped)
 ├── src/
