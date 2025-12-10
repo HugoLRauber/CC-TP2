@@ -13,7 +13,7 @@ The system implements a custom **Reliable UDP Protocol** (Application Layer) cap
 ## 📸 Screenshots
 
 ### 1. CORE Topology
-![Topology](./prints/topologia.png)
+![Topology](./prints/Topologia.png)
 *Network Topology running in CORE*
 
 ---
@@ -25,7 +25,7 @@ The system implements a custom **Reliable UDP Protocol** (Application Layer) cap
 ---
 
 ### 3. NaveMae Dashboard
-![NaveMae](./prints/naveMae.png)
+![NaveMae](./prints/NaveMae.png)
 *Mothership real-time orders to the rovers*
 ---
 
