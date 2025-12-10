@@ -58,22 +58,27 @@ The simulation runs inside the **CORE Network Emulator** with the following node
 
 ## 📂 Project Structure
 
-bash 
-``` 
+```bash
 TP2/
+├── data/                  # Configuration Data
+│   ├── missoes.json       # Mission definitions (ID, type, duration)
+│   └── rovers_config.json # Static IP/Port config for Rovers
 ├── logs/                  # Auto-generated logs (timestamped)
 ├── src/
-│   ├── database.py        # SQLite/In-memory management
-│   ├── GroundControl.py   # Dashboard Server logic
-│   ├── HTTP.py            # Custom HTTP Server implementation
-│   ├── navemae.py         # Mothership Logic (Server)
-│   ├── Pacote.py          # Packet Struct & Serialization
-│   ├── rover_autonomo.py  # Rover Logic (Client)
-│   └── services/
-│       └── udp.py         # UDP Service & Reliability Logic
-├── web/
-│   ├── groundcontrol.html # Dashboard Frontend
+│   ├── services/          # Network Services (Modular)
+│   │   ├── api.py         # REST API logic (GET/POST)
+│   │   ├── tcp.py         # TCP Telemetry Service
+│   │   └── udp.py         # UDP Reliable Protocol Service
+│   ├── database.py        # Central State & Persistence
+│   ├── HTTP.py            # HTTP Server Wrapper
+│   ├── navemae.py         # Mothership Main Entry Point
+│   ├── Pacote.py          # Custom Packet Struct & Serialization
+│   └── rover_autonomo.py  # Rover Autonomous Logic
+├── web/                   # Frontend Dashboards
+│   ├── groundcontrol.html # Main Mission Control Interface
 │   └── navemae.html       # Mothership Admin Panel
+├── TP2.imn                # CORE Topology Source File
+├── fechar.sh              # Panic Script (Cleanup processes)
 └── run_core.sh            # 🚀 ALL-IN-ONE LAUNCH SCRIPT
 ```
 
@@ -127,5 +132,5 @@ You can verify the system's robustness by applying "Link Effects" in CORE:
 ---
 
 <p align="center">
-  <i>Developed for Computer Networks - 2024/2025</i>
+  <i>Developed for Computer Networks - 2025/2026</i>
 </p>
