@@ -75,44 +75,55 @@ TP2/
 │   └── navemae.html       # Mothership Admin Panel
 └── run_core.sh            # 🚀 ALL-IN-ONE LAUNCH SCRIPT
 
-🚀 How to Run
-Prerequisites
-Linux Environment (Virtual Machine).
+## 🚀 How to Run
 
-CORE Network Emulator installed.
+### Prerequisites
+* Linux Environment (Virtual Machine).
+* **CORE Network Emulator** installed.
+* Python 3.
 
-Python 3.
+### Steps
 
-Steps
-Open CORE: Open the topology file (.imn) in the CORE GUI.
+1.  **Open CORE:**
+    Open the topology file (`.imn`) in the CORE GUI.
 
-Start Emulation: Click the Green Play Button ▶️ in CORE to start the network.
+2.  **Start Emulation:**
+    Click the **Green Play Button** ▶️ in CORE to start the network.
 
-Launch the System: Open your terminal, navigate to the project folder, and run the automation script:
+3.  **Launch the System:**
+    Open your terminal, navigate to the project folder, and run the automation script:
 
-Bash
+    ```bash
+    cd ~/Desktop/TP2
+    chmod +x run_core.sh
+    ./run_core.sh
+    ```
 
-cd ~/Desktop/TP2
-chmod +x run_core.sh
-./run_core.sh
-What this script does: It automatically detects the active CORE session, launches the Python scripts inside the specific virtual nodes, creates log files in logs/, and opens the Firefox dashboard.
+    > **What this script does:** It automatically detects the active CORE session, launches the Python scripts inside the specific virtual nodes, creates log files in `logs/`, and opens the Firefox dashboard.
 
-Stop Simulation: Press CTRL + C in the terminal to kill all processes safely.
+4.  **Stop Simulation:**
+    Press `CTRL + C` in the terminal to kill all processes safely.
 
-🧪 Testing Scenarios
+---
+
+## 🧪 Testing Scenarios
+
 You can verify the system's robustness by applying "Link Effects" in CORE:
 
-Scenario A (Perfect Network): 0% Loss. Immediate ACKs.
+* **Scenario A (Perfect Network):** 0% Loss. Immediate ACKs.
+* **Scenario B (Mars Storm):** **25% Loss**. Watch the logs show `[TIMEOUT] Retransmitting (1/5)...`. The system will recover automatically.
+* **Scenario C (Echoes):** **20% Duplication**. Watch the logs show `[DUPLICADO] Packet ignored`.
 
-Scenario B (Mars Storm): 25% Loss. Watch the logs show [TIMEOUT] Retransmitting (1/5).... The system will recover automatically.
+---
 
-Scenario C (Echoes): 20% Duplication. Watch the logs show [DUPLICADO] Packet ignored.
+## 👨‍💻 Authors
 
-👨‍💻 Authors
-[Tomás Machado]
+* **[Tomás Machado ]**
+* **[Hugo Rauber]**
+* **[Rui Fernandes]**
 
-[Hugo Rauber]
+---
 
-[Rui Fernandes]
-
-<p align="center"> <i>Developed for Computer Networks - 2024/2025</i> </p>
+<p align="center">
+  <i>Developed for Computer Networks - 2024/2025</i>
+</p>
