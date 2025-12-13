@@ -1,272 +1,0 @@
-========================================
-         NAVE-MÃE SERVER (CORE)
-========================================
- DB: 4 missões carregadas.
- DB: 3 rovers configurados.
->>> A iniciar serviços de rede...
-[UDP] MissionLink Online                                                        
- [TCP] TelemetryStream Online (Porta 6000)
- SISTEMA ONLINE.
-   - UDP MissionLink: Porta 4444
-   - TCP Telemetry:   Porta 6000
-   - HTTP API:        Porta 8080
-
-[A aguardar conexões... Pressione CTRL+C para sair]
-
- API Híbrida (HTML+JSON) Online na porta 8080
-[TCP] Nova conexão recebida de ('10.0.3.20', 48756)
- [TCP] Rover 3: 100%
-👋 [HANDSHAKE] [Rover-Gamma] Pedido de conexao recebido! (Seq 101)               
-   [ACK-TX] Aceitei conexao de Rover-Gamma                                      
-[TCP] Nova conexão recebida de ('10.0.2.20', 47446)
-[TCP] Nova conexão recebida de ('10.0.1.20', 39436)
- [TCP] Rover 2: 100%
-👋 [HANDSHAKE] [Rover-Beta] Pedido de conexao recebido! (Seq 101)                
-   [ACK-TX] Aceitei conexao de Rover-Beta                                       
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
- [TCP] Rover 1: 100%
-👋 [HANDSHAKE] [Rover-Alpha] Pedido de conexao recebido! (Seq 101)               
-   [ACK-TX] Aceitei conexao de Rover-Alpha                                      
-   [ACK-TX] [Rover-Alpha] Confirmei estado: '[Rover-Alpha] STATUS: IDLE'        
-👋 [HANDSHAKE-RETRY] [Rover-Gamma] Rover insiste na conexao (Seq 101)            
-   [ACK-TX] Reenviei confirmacao de conexao para Rover-Gamma                    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 102 ignorado.                                     
- [TCP] Rover 2: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 3: 100%
-[API] A pedir envio UDP para Rover 3...
-[ENVIO] Para Rover-Gamma (('10.0.3.20', 6003)) | Cmd: '{"id": "M-002", "tarefa": "Fotografia de Alta Resolucao", "duracao": "25"}' | Seq: 101
-[TIMEOUT] Rover-Gamma nao respondeu. A retransmitir (1/5)...                    
-[ACK-RX] Rover-Gamma confirmou recepcao do Seq 101!                             
-[MISSAO] [Rover-Gamma] [Rover-Gamma] STARTED: Fotografia de Alta Resolucao      
-   [ACK-TX] Confirmei INICIO de missao                                          
- [TCP] Rover 3: 96%
- [TCP] Rover 2: 100%
- [TCP] Rover 1: 100%
-[DUPLICADO] [Rover-Gamma] Seq 103 ignorado.                                     
- [TCP] Rover 3: 86%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[FOTO] [Rover-Gamma] Frag 'M-002' | Seq 111 | 250B | MORE_FRAGS (1)             
-   [ACK-TX] [Rover-Gamma] Confirmei fragmento 111                               
-[FOTO] [Rover-Gamma] Frag 'M-002' | Seq 112 | 250B | MORE_FRAGS (1)             
-   [ACK-TX] [Rover-Gamma] Confirmei fragmento 112                               
-[API] A pedir envio UDP para Rover 1...
-[ENVIO] Para Rover-Alpha (('10.0.1.20', 6001)) | Cmd: '{"id": "M-001", "tarefa": "Coleta Mineral", "duracao": "30"}' | Seq: 102
-[ACK-RX] Rover-Alpha confirmou recepcao do Seq 102!                             
-[MISSAO] [Rover-Alpha] [Rover-Alpha] STARTED: Coleta Mineral                    
-   [ACK-TX] Confirmei INICIO de missao                                          
- [TCP] Rover 3: 76%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[FOTO] [Rover-Gamma] Frag 'M-002' | Seq 113 | 250B | MORE_FRAGS (1)             
-   [ACK-TX] [Rover-Gamma] Confirmei fragmento 113                               
-[FOTO] [Rover-Gamma] Frag 'M-002' | Seq 114 | 249B | MORE_FRAGS (0)             
-   [ACK-TX] [Rover-Gamma] Confirmei fragmento 114                               
-[FIM] [Rover-Gamma] Foto 'M-002' recebida com sucesso!                          
-[FOTO] [Rover-Gamma] Frag 'M-002' | Seq 114 | 249B | MORE_FRAGS (0)             
-   [ACK-TX] [Rover-Gamma] Confirmei fragmento 114                               
-[FIM] [Rover-Gamma] Foto 'M-002' recebida com sucesso!                          
-[API] A pedir envio UDP para Rover 2...
-[ENVIO] Para Rover-Beta (('10.0.2.20', 6002)) | Cmd: '{"id": "M-004", "tarefa": "Mapeamento Visual", "duracao": "30"}' | Seq: 103
-[ACK-RX] Rover-Beta confirmou recepcao do Seq 103!                              
-[MISSAO] [Rover-Beta] [Rover-Beta] STARTED: Mapeamento Visual                   
-   [ACK-TX] Confirmei INICIO de missao                                          
- [TCP] Rover 1: 90%
- [TCP] Rover 3: 66%
- [TCP] Rover 2: 96%
-[MISSAO] [Rover-Gamma] [Rover-Gamma] COMPLETED: Fotografia de Alta Resolucao    
-   [ACK-TX] Confirmei FIM de missao                                             
- [TCP] Rover 3: 58%
- [TCP] Rover 1: 80%
- [TCP] Rover 2: 86%
-[DUPLICADO] [Rover-Gamma] Seq 120 ignorado.                                     
- [TCP] Rover 3: 58%
- [TCP] Rover 1: 70%
- [TCP] Rover 2: 76%
- [TCP] Rover 3: 58%
- [TCP] Rover 2: 66%
- [TCP] Rover 1: 60%
-[MISSAO] [Rover-Alpha] [Rover-Alpha] COMPLETED: Coleta Mineral                  
-   [ACK-TX] Confirmei FIM de missao                                             
- [TCP] Rover 3: 58%
- [TCP] Rover 1: 58%
-[MISSAO] [Rover-Beta] [Rover-Beta] COMPLETED: Mapeamento Visual                 
-   [ACK-TX] Confirmei FIM de missao                                             
- [TCP] Rover 2: 58%
-[API] A pedir envio UDP para Rover 3...
-[ENVIO] Para Rover-Gamma (('10.0.3.20', 6003)) | Cmd: 'CMD:CHARGE' | Seq: 104   
-[ACK-RX] Rover-Gamma confirmou recepcao do Seq 104!                             
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 3: 62%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 3: 67%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 72%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 3: 77%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 3: 82%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 87%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 2: 58%
- [TCP] Rover 1: 58%
- [TCP] Rover 3: 92%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 97%
- [TCP] Rover 1: 58%
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
- [TCP] Rover 1: 58%
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
- [TCP] Rover 1: 58%
- [TCP] Rover 3: 100%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
-[DUPLICADO] [Rover-Gamma] Seq 121 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[DUPLICADO] [Rover-Gamma] Seq 122 ignorado.                                     
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: CHARGING'    
- [TCP] Rover 1: 58%
- [TCP] Rover 2: 58%
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
- [TCP] Rover 3: 100%
