@@ -6,7 +6,7 @@ import threading
 import random
 import os
 
-# Caminho para importar Pacote
+# Permite importar Pacote.py a partir da pasta pai (src)
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import Pacote
 from Pacote import (TIPO_DADOS_MISSAO, TIPO_ACK, TIPO_PROGRESSO, FLAG_MORE_FRAGMENTS)
@@ -43,10 +43,13 @@ class RoverAutonomo:
 
         self.ack_events = {}
         self.lock = threading.Lock()
+        
+        # Flag de controlo para saber se o TCP esta vivo
+        self.nave_online = False
 
         print(f"[{self.nome}] ONLINE | Pos: {self.posicao}")
 
-    # --- SISTEMA DE ACKS ---
+    # Gestão de ACKs para garantir entrega fiável
     def esperar_ack(self, seq, timeout=3.0):
         evt = threading.Event()
         with self.lock:
@@ -66,9 +69,12 @@ class RoverAutonomo:
         pacote_bytes = pct.pack()
         
         while True:
+            # Fase 1: tenta 5 retransmissões rápidas
             tentativas = 5
             for t in range(tentativas):
-                self.sock.sendto(pacote_bytes, self.endereco_nave)
+                try:
+                    self.sock.sendto(pacote_bytes, self.endereco_nave)
+                except: pass
 
                 if self.esperar_ack(pct.num_seq, timeout=3.0):
                     if verbose: 
@@ -76,11 +82,27 @@ class RoverAutonomo:
                     return True
 
                 if verbose: 
-                    print(f"[{self.nome}] [TIMEOUT] Sem ACK para Seq {pct.num_seq}. Retransmitindo ({t+1}/{tentativas})...")
+                    print(f"[{self.nome}] [TIMEOUT] Sem ACK (Seq {pct.num_seq}). ({t+1}/{tentativas})...")
 
-            print(f"[{self.nome}] [REDE EM BAIXO] Falha apos 5 tentativas. A aguardar 5s...")
-            time.sleep(5)
-            print(f"[{self.nome}] A retomar envio persistente do Seq {pct.num_seq}...")
+            # Fase 2: considera falha e valida estado da Nave
+            print(f"[{self.nome}] [ALERTA] Falha UDP após 5 tentativas.")
+            print(f"[{self.nome}] A aguardar 5s antes de verificar estado da Nave...")
+            
+            # 1. Espera 5 segundos para dar tempo ao TCP falhar se for o caso
+            time.sleep(5) 
+
+            # Verifica estado TCP como confirmação extra
+            if not getattr(self, 'nave_online', False):
+                # Caso crítico: ligação TCP indisponível
+                print(f"[{self.nome}] [CRITICO] Conexão TCP inativa após espera! A Nave não responde.")
+                print(f"[{self.nome}] [EMERGENCIA] A fechar conexão e abortar missão.")
+                
+                self.status = "ORPHAN" # Estado de erro
+                return False # Sai do loop e cancela o envio
+            
+            # Caso normal: lag/perdas; retomar tentativas
+            print(f"[{self.nome}] [INFO] TCP ainda ativo (Nave viva). A reiniciar tentativas UDP...")
+            # O 'while True' vai fazer voltar ao início e tentar mais 5 vezes
 
     def enviar_foto(self, missao_id):
         tamanho_total = random.randint(500, 1000)
@@ -109,16 +131,19 @@ class RoverAutonomo:
             )
 
             print(f"[{self.nome}] [FRAG] Envio Seq {self.seq} | Offset {offset} | {flag_str}")
-            self.enviar_pacote_seguro(pct, verbose=True)
+            if not self.enviar_pacote_seguro(pct, verbose=True):
+                break # Se falhar envio, para a foto
 
             offset = prox_offset
             time.sleep(0.2)
-        print(f"[{self.nome}] [FIM] Foto enviada com sucesso.\n")
+        
+        if self.status != "ORPHAN":
+            print(f"[{self.nome}] [FIM] Foto enviada com sucesso.\n")
 
     def loop_bateria(self):
         while True:
             time.sleep(2)
-            if self.status == "DESCONECTADO":
+            if self.status == "DESCONECTADO" or self.status == "ORPHAN":
                 continue
 
             if self.status == "CHARGING":
@@ -137,16 +162,45 @@ class RoverAutonomo:
         while True:
             try:
                 s = socket(AF_INET, SOCK_STREAM)
-                s.settimeout(None)
+                s.settimeout(5) # Timeout de conexão inicial
                 s.connect((self.ip_nave, PORTA_TCP_NAVE))
+                
+                self.nave_online = True
+                # print(f"[{self.nome}] [TCP] Conectado à Nave.")
+
                 while True:
+                    # 1. Preparar e Enviar Dados
                     d = { "id": self.id, "bat": self.bateria, "pos": self.posicao, "status": self.status }
                     msg = json.dumps(d) + "\n"
                     s.sendall(msg.encode('utf-8'))
-                    time.sleep(10)
-            except Exception: pass
-            finally: s.close()
-            time.sleep(5)
+                    
+
+                    try:
+                        # Tenta ler 1 byte sem bloquear (MSG_DONTWAIT funciona em Linux/CORE)
+                        # Se a nave morreu, isto vai retornar b"" (vazio) ou dar erro de reset
+                        # Nota: MSG_DONTWAIT vem do 'from socket import *'
+                        dados_teste = s.recv(1024, MSG_DONTWAIT)
+                        
+                        if dados_teste == b"": 
+                            raise Exception("Socket fechado (Zero Bytes)")
+                            
+                    except BlockingIOError:
+                        pass 
+                    # -------------------------------------------
+
+                    self.nave_online = True # Se passou o teste, está viva
+                    time.sleep(2) 
+            
+            except Exception as e: 
+                # Se der erro no connect, no sendall, ou na nossa "armadilha" recv:
+                # print(f"[{self.nome}] [TCP] Falha detetada: {e}") # Opcional: Debug
+                self.nave_online = False 
+            
+            finally: 
+                try: s.close()
+                except: pass
+            
+            time.sleep(2)
 
     def avisar_udp(self, msg, seguro=True):
         self.seq = (self.seq + 1) % 255
@@ -159,17 +213,20 @@ class RoverAutonomo:
         
         self.enviar_pacote_seguro(pct, verbose=(not e_progresso))
 
-    def executar(self, missao):
-        if self.status == "DESCONECTADO": return
+def executar(self, missao):
+        if self.status == "DESCONECTADO" or self.status == "ORPHAN": return
 
         tarefa = missao.get("tarefa", "?")
         duracao = int(missao.get("duracao", 15))
         mid = missao.get("id", "M-???")
+        
+        INTERVALO = int(missao.get("frequencia", 2))
 
         self.status = "EM_MISSAO"
         self.avisar_udp(f"STARTED: {tarefa}")
 
-        INTERVALO = 2
+        if INTERVALO < 1: INTERVALO = 1 
+
         passos = int(duracao / INTERVALO)
         if passos < 1: passos = 1
         perc_passo = 100 / passos
@@ -210,11 +267,7 @@ class RoverAutonomo:
                 ack = Pacote.MissionPacket(TIPO_ACK, ack_num=pct.num_seq)
                 self.sock.sendto(ack.pack(), self.endereco_nave)
 
-                # --- CORREÇÃO: Deteção de Duplicados e Fora de Ordem ---
-                # Se o pacote for antigo (<=), ignoramos.
                 if pct.num_seq <= self.last_rx_seq:
-                    # Opcional: print para debug
-                    # print(f"[{self.nome}] [UDP] Pacote antigo/duplicado descartado (Seq {pct.num_seq})")
                     continue
                 self.last_rx_seq = pct.num_seq
 
@@ -222,10 +275,8 @@ class RoverAutonomo:
                     txt = pct.payload.decode('utf-8', errors='ignore')
                     
                     if "CMD:CHARGE" in txt:
-                        # --- CORREÇÃO: Só carrega se não estiver cheio ---
                         if self.bateria >= 100:
                             print(f"[{self.nome}] Comando Carga ignorado (Bateria Cheia)")
-                            # Força atualização de estado para IDLE na nave se houver desincronização
                             self.avisar_udp("STATUS: IDLE")
                         else:
                             self.status = "CHARGING"

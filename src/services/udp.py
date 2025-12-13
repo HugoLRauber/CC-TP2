@@ -8,10 +8,12 @@ import Pacote
 from Pacote import (TIPO_DADOS_MISSAO, TIPO_ACK, TIPO_PROGRESSO, FLAG_MORE_FRAGMENTS)
 
 def print_log(texto):
+    # Log simples alinhado no terminal
     sys.stdout.write(f"\r{texto:<80}\n")
     sys.stdout.flush()
 
 def enviar_comando_manual(database, target_id, payload_str):
+    # Envia comando/JSON para um rover via UDP com confirmação por ACK
     target_id = int(target_id)
     conf = database.config_rovers.get(target_id)
     
@@ -67,7 +69,7 @@ def processar_pacote(addr, dados, s, db):
             db.notificar_ack_recebido(addr, pct.ack_num)
             return
 
-        # Envia ACK
+        # Responde com ACK para confirmar receção
         ack = Pacote.MissionPacket(tipo_msg=TIPO_ACK, ack_num=pct.num_seq)
         s.sendto(ack.pack(), addr)
 
@@ -97,14 +99,14 @@ def processar_pacote(addr, dados, s, db):
             msg = pct.payload.decode('utf-8')
             updates = {}
 
-            # --- DETEÇÃO DE HANDSHAKE ---
+            # Deteta handshake inicial de ligação
             is_handshake = "DESCONECTADO" in msg
 
             # Verifica duplicados
             if not db.processa_e_insere(addr, pct.num_seq, f"{nome}: {msg}"):
                 # Se for Handshake duplicado, mostramos para ver a insistencia
                 if is_handshake:
-                    print_log(f"👋 [HANDSHAKE-RETRY] [{nome}] Rover insiste na conexao (Seq {pct.num_seq})")
+                    print_log(f"[HANDSHAKE-RETRY] [{nome}] Rover insiste na conexao (Seq {pct.num_seq})")
                     print_log(f"   [ACK-TX] Reenviei confirmacao de conexao para {nome}")
                 
                 # Se nao for handshake nem progresso, mostra duplicado normal
@@ -115,7 +117,7 @@ def processar_pacote(addr, dados, s, db):
             # --- PROCESSAMENTO DE MENSAGENS NOVAS ---
             
             if is_handshake:
-                print_log(f"👋 [HANDSHAKE] [{nome}] Pedido de conexao recebido! (Seq {pct.num_seq})")
+                print_log(f"[HANDSHAKE] [{nome}] Pedido de conexao recebido! (Seq {pct.num_seq})")
                 print_log(f"   [ACK-TX] Aceitei conexao de {nome}")
                 updates["status"] = "DESCONECTADO"
 

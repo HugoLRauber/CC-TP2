@@ -4,27 +4,31 @@
     "tarefa": "Coleta Mineral",
     "area": [10.0, 20.0],
     "duracao": 15,
-    "detalhes": "Missao de aquecimento."
+    "detalhes": "Missao de aquecimento.",
+    "frequencia" : 5
   },
   {
     "id": "M-002",
     "tarefa": "Fotografia de Alta Resolucao",
     "area": [50.0, 50.0],
     "duracao": 25,
-    "detalhes": "Capturar imagem panoramica da cratera. Enviar dados da foto via MissionLink."
+    "detalhes": "Capturar imagem panoramica da cratera. Enviar dados da foto via MissionLink.",
+    "frequencia": 2
   },
   {
     "id": "M-003",
     "tarefa": "Analise Sismica",
     "area": [0.0, 0.0],
     "duracao": 20,
-    "detalhes": "Leitura de sensores de solo."
+    "detalhes": "Leitura de sensores de solo.",
+    "frequencia": 1
   },
   {
     "id": "M-004",
     "tarefa": "Mapeamento Visual Infravermelho",
     "area": [-88.5, 12.3],
     "duracao": 30,
-    "detalhes": "Requer envio de pacote de dados de imagem termica (payload grande)."
+    "detalhes": "Requer envio de pacote de dados de imagem termica (payload grande).",
+    "frequencia": 3
   }
 ]

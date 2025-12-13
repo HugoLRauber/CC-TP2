@@ -3,12 +3,12 @@ import time
 import sys
 import os
 
-# Adiciona o diretório atual ao path para garantir imports
+# Garante que os módulos da pasta src são resolvidos
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     from database import Database
-    # IMPORTANTE: Importar os serviços da pasta 'services'
+    # Importa serviços de rede (UDP envia/recebe comandos)
     from services.udp import start_udp_service, enviar_comando_manual
     from services.tcp import start_tcp_service
     from HTTP import arranca_api_http # Mantemos o HTTP.py pois é o que tens
@@ -18,11 +18,9 @@ except ImportError as e:
 
 import json
 
-# --- CALLBACK PARA A API ---
+# Callback da API para envio de comandos/missões
 def handler_api(dados):
-    """
-    Função chamada pela API quando o utilizador clica num botão.
-    """
+    """Recebe dados do HTTP e envia ordem via UDP para o rover alvo."""
     db = dados.get("_db_ref")
     tid = int(dados.get("target_id"))
     
@@ -46,15 +44,15 @@ def main():
 
     print(">>> A iniciar serviços de rede...")
     
-    # 2. Lançar os Serviços (Usando os ficheiros da pasta services!)
+    # 2. Lançar serviços (udp/tcp/http)
     
-    # UDP: Porta 4444 (services/udp.py)
+    # UDP: Porta 4444 (canal de missões)
     t_udp = threading.Thread(target=start_udp_service, args=(db,), daemon=True)
     
-    # TCP: Porta 6000 (services/tcp.py)
+    # TCP: Porta 6000 (telemetria contínua)
     t_tcp = threading.Thread(target=start_tcp_service, args=(db,), daemon=True)
     
-    # API: Porta 8080 (HTTP.py)
+    # HTTP API: Porta 8080 (controlo e visualização)
     rovers_api = {rid: (c["ip"], c["porta_udp"]) for rid, c in db.config_rovers.items()}
     t_api = threading.Thread(target=arranca_api_http, args=(db, rovers_api, handler_api, 8080), daemon=True)
 

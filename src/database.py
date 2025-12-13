@@ -48,7 +48,7 @@ class Database:
             with open(self._get_path(ficheiro), 'r', encoding='utf-8') as f:
                 self.lista_de_missoes = json.load(f)
             print(f" DB: {len(self.lista_de_missoes)} missões carregadas.")
-        except Exception as e: print(f"❌ DB: Erro missoes: {e}")
+        except Exception as e: print(f" DB: Erro missoes: {e}")
 
     def carregar_config(self):
         try:
@@ -56,7 +56,7 @@ class Database:
                 raw = json.load(f)
                 self.config_rovers = {int(k): v for k,v in raw.items()}
             print(f" DB: {len(self.config_rovers)} rovers configurados.")
-        except Exception as e: print(f"⚠️ DB: Erro config: {e}")
+        except Exception as e: print(f" DB: Erro config: {e}")
 
     def carregar_dados(self):
         self.carregar_missoes_do_ficheiro("missoes.json")

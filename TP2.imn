@@ -12,8 +12,8 @@ node n1 {
 	!
     }
     canvas c1
-    iconcoords {270.0 415.0}
-    labelcoords {270.0 447.0}
+    iconcoords {285.0 329.0}
+    labelcoords {283.0 366.0}
     interface-peer {eth0 n3}
     interface-peer {eth1 n2}
 }
@@ -38,8 +38,8 @@ node n3 {
 	!
     }
     canvas c1
-    iconcoords {437.0 306.0}
-    labelcoords {437.0 338.0}
+    iconcoords {505.0 194.0}
+    labelcoords {505.0 178.0}
     interface-peer {eth0 n1}
     interface-peer {eth1 n4}
     interface-peer {eth2 n5}
@@ -57,8 +57,8 @@ node n4 {
 	!
     }
     canvas c1
-    iconcoords {699.0 92.0}
-    labelcoords {699.0 124.0}
+    iconcoords {1094.0 89.0}
+    labelcoords {1095.0 126.0}
     interface-peer {eth0 n3}
 }
 
@@ -73,8 +73,8 @@ node n5 {
 	!
     }
     canvas c1
-    iconcoords {828.0 306.0}
-    labelcoords {828.0 338.0}
+    iconcoords {1119.0 341.0}
+    labelcoords {1119.0 373.0}
     interface-peer {eth0 n3}
 }
 
@@ -89,8 +89,8 @@ node n6 {
 	!
     }
     canvas c1
-    iconcoords {698.0 468.0}
-    labelcoords {698.0 500.0}
+    iconcoords {994.0 546.0}
+    labelcoords {984.0 586.0}
     interface-peer {eth0 n3}
 }
 
@@ -105,8 +105,8 @@ node n2 {
 	!
     }
     canvas c1
-    iconcoords {100.0 356.0}
-    labelcoords {100.0 388.0}
+    iconcoords {116.0 180.0}
+    labelcoords {118.0 159.0}
     interface-peer {eth0 n1}
 }
 
@@ -118,24 +118,18 @@ link l1 {
 
 link l2 {
     color Black
-    ber 15
-    duplicate 25
     nodes {n3 n4}
     bandwidth 0
 }
 
 link l3 {
     color Black
-    duplicate 10
-    ber 20
     nodes {n3 n5}
     bandwidth 0
 }
 
 link l4 {
     color Black
-    duplicate 15
-    ber 25
     nodes {n3 n6}
     bandwidth 0
 }
@@ -146,8 +140,91 @@ link l5 {
     bandwidth 0
 }
 
+annotation a1 {
+    iconcoords {35 102 215 263}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a2 {
+    iconcoords {180 224 393 410}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a3 {
+    iconcoords {394 106 631 305}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a4 {
+    iconcoords {969 9 1157 179}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a5 {
+    iconcoords {998 253 1196 433}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffffff
+    width 0
+    border black
+    canvas c1
+}
+
+annotation a6 {
+    iconcoords {889 456 1085 634}
+    type oval
+    label {}
+    labelcolor black
+    fontfamily {Arial}
+    fontsize {12}
+    color #ffffff
+    width 0
+    border black
+    canvas c1
+}
+
 canvas c1 {
     name {Canvas1}
+    refpt {0 0 47.5791667 -122.132322 2.0}
+    scale {150.0}
+    wallpaper-style {scaled}
+    wallpaper {/media/sf_TP2/imagens/planeta_cc_tp2.png}
+    size {1367 672}
 }
 
 option global {
@@ -159,7 +236,7 @@ option global {
     show_api no
     background_images no
     annotations yes
-    grid yes
+    grid no
     traffic_start 0
 }
 

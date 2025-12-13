@@ -4,20 +4,20 @@ import os
 import mimetypes
 import sys
 
-# Adiciona o diretório atual ao path
+# Garante que módulos locais de src são importáveis
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 class APIHandler(BaseHTTPRequestHandler):
 
-    # --- Método para Servir HTML/CSS/JS ---
+    # Serve ficheiros estáticos da pasta web (HTML/CSS/JS)
     def _serve_file(self, relative_path):
-        # Procura a pasta 'web' (irmã da pasta 'src')
+        # Localiza a pasta 'web' ao lado de 'src'
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         file_path = os.path.join(base_dir, 'web', relative_path)
 
         if os.path.exists(file_path) and os.path.isfile(file_path):
             self.send_response(200)
-            # Define o tipo correto (HTML, CSS, JS)
+            # Define o MIME adequado (HTML, CSS, JS)
             mime_type, _ = mimetypes.guess_type(file_path)
             self.send_header('Content-type', mime_type or 'application/octet-stream')
             self.send_header('Access-Control-Allow-Origin', '*') 
@@ -29,17 +29,18 @@ class APIHandler(BaseHTTPRequestHandler):
             self.send_error(404, f"Ficheiro nao encontrado: {relative_path}")
 
     def _set_headers(self, status=200):
+        # Cabeçalhos comuns (JSON + CORS)
         self.send_response(status)
         self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*') 
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
 
     def do_OPTIONS(self):
         self._set_headers()
 
-    # --- GET: Híbrido (HTML + API) ---
+    # Gestão de GET: páginas web e endpoints de API
     def do_GET(self):
-        # 1. Servir Páginas HTML
+        # Primeiro, tenta servir páginas HTML
         if self.path == '/' or self.path == '/groundcontrol':
             self._serve_file('groundcontrol.html')
             return

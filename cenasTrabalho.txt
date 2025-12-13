@@ -1,0 +1,22 @@
+Entra no CORE
+Inicia a sessao
+Entra terminal da navemae
+Vai à pasta do projeto
+./run_core.sh
+
+Se por acaso aparecer:
+No protocol specified
+
+Unable to init server: Could not connect: Connection refused
+
+Error: cannot open display: :0
+
+Abre um terminal novo fora do Core e executa xhost +
+
+Para realizar a simulacao da navemae a explodir:
+- corre o script normalmente
+- coloca um tempo de missao decente (p.e. 40 segundos)
+- abre um terminal exterior ao do CORE
+- acede à pasta onde esta o ficheiro da navemae
+- executa o comando sudo pkill -9 -f "navemae"
+- deverá aparecer instaneamente a mensagem Killed

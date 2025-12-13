@@ -1,13 +1,13 @@
 import struct
 
-# Constantes
+# Tipos de mensagem e flags
 TIPO_PEDIDO_MISSAO = 1
 TIPO_DADOS_MISSAO = 2
 TIPO_ACK = 3
 TIPO_PROGRESSO = 4
 FLAG_MORE_FRAGMENTS = 1
 
-# !BHHBHH = 1 Byte Tipo, 2 Bytes Seq, 2 Bytes Ack, 1 Byte Flags, 2 Bytes Offset, 2 Bytes Tamanho
+# Formato cabeçalho: Tipo(1), Seq(2), Ack(2), Flags(1), Offset(2), Tamanho(2)
 FORMATO_CABECALHO = "!BHHBHH"
 TAMANHO_CABECALHO = struct.calcsize(FORMATO_CABECALHO)
 

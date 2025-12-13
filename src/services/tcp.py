@@ -7,6 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def tratar_cliente(conn, addr, database):
+    # Lê mensagens JSON linha-a-linha e atualiza telemetria
     print(f"[TCP] Nova conexão recebida de {addr}") 
     
     try:
