@@ -1,0 +1,21 @@
+Para validar o sistema no ambiente de emulação CORE, foi desenvolvido um script de automação (run.sh) que inicializa todos os componentes do sistema distribuído. O procedimento para executar a simulação é o seguinte:
+
+Inicialização do Cenário: Abrir o ficheiro de topologia TP2.imn no emulador CORE e iniciar a sessão pressionando o botão verde (Start) na barra de ferramentas.
+
+Lançamento dos Serviços:
+
+Aceder ao terminal do nó virtual navemae (clique duplo no ícone da Nave-Mãe).
+
+Navegar até à diretoria raiz do projeto.
+
+Executar o script de arranque com o comando: ./run.sh.
+
+Este script inicia automaticamente o servidor da Nave-Mãe, instancia os processos dos Rovers (Alpha, Beta e Gamma) e lança as interfaces gráficas.
+
+Acesso ao Ground Control:
+
+O dashboard de controlo deve abrir automaticamente numa janela do navegador Firefox.
+
+Alternativamente, pode ser acedido manualmente a partir de qualquer nó na rede (ex: nó groundcontrol) através do endereço: http://10.0.0.10:8080/groundcontrol.
+
+Terminar a Simulação: Para encerrar todos os processos e limpar os sockets, basta pressionar CTRL+C no terminal onde o script está a correr.
