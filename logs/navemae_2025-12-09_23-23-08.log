@@ -1,324 +1,0 @@
-========================================
-         NAVE-MÃE SERVER (CORE)
-========================================
- DB: 4 missões carregadas.
- DB: 3 rovers configurados.
->>> A iniciar serviços de rede...
-[UDP] MissionLink Online                                                        
- [TCP] TelemetryStream Online (Porta 6000)
- SISTEMA ONLINE.
-   - UDP MissionLink: Porta 4444
-   - TCP Telemetry:   Porta 6000
-   - HTTP API:        Porta 8080
-
-[A aguardar conexões... Pressione CTRL+C para sair]
-
- API Híbrida (HTML+JSON) Online na porta 8080
-👋 [HANDSHAKE] [Rover-Beta] Pedido de conexao recebido! (Seq 101)                
-   [ACK-TX] Aceitei conexao de Rover-Beta                                       
-[TCP] Nova conexão recebida de ('10.0.3.20', 50104)
- [TCP] Rover 3: 100%
-👋 [HANDSHAKE] [Rover-Alpha] Pedido de conexao recebido! (Seq 101)               
-   [ACK-TX] Aceitei conexao de Rover-Alpha                                      
-[TCP] Nova conexão recebida de ('10.0.1.20', 40778)
-   [ACK-TX] [Rover-Alpha] Confirmei estado: '[Rover-Alpha] STATUS: IDLE'        
-👋 [HANDSHAKE] [Rover-Gamma] Pedido de conexao recebido! (Seq 101)               
-   [ACK-TX] Aceitei conexao de Rover-Gamma                                      
-   [ACK-TX] [Rover-Gamma] Confirmei estado: '[Rover-Gamma] STATUS: IDLE'        
-[TCP] Nova conexão recebida de ('10.0.2.20', 48788)
- [TCP] Rover 2: 100%
- [TCP] Rover 1: 100%
-[DUPLICADO] [Rover-Alpha] Seq 102 ignorado.                                     
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
-[DUPLICADO] [Rover-Beta] Seq 102 ignorado.                                      
-[DUPLICADO] [Rover-Beta] Seq 102 ignorado.                                      
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[API] A pedir envio UDP para Rover 1...
-[ENVIO] Para Rover-Alpha (('10.0.1.20', 6001)) | Cmd: 'CMD:CHARGE' | Seq: 101   
-[ACK-RX] Rover-Alpha confirmou recepcao do Seq 101!                             
-   [ACK-TX] [Rover-Alpha] Confirmei estado: '[Rover-Alpha] STATUS: IDLE'        
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[API] A pedir envio UDP para Rover 1...
-[ENVIO] Para Rover-Alpha (('10.0.1.20', 6001)) | Cmd: '{"id": "M-002", "tarefa": "Fotografia de Alta Resolucao", "duracao": "40"}' | Seq: 102
- [TCP] Rover 1: 100%
-[TIMEOUT] Rover-Alpha nao respondeu. A retransmitir (1/5)...                    
- [TCP] Rover 2: 100%
-[TIMEOUT] Rover-Alpha nao respondeu. A retransmitir (2/5)...                    
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[TIMEOUT] Rover-Alpha nao respondeu. A retransmitir (3/5)...                    
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
-[TIMEOUT] Rover-Alpha nao respondeu. A retransmitir (4/5)...                    
- [TCP] Rover 2: 100%
-[ERRO] Rover-Alpha incontactavel apos 5 tentativas.                             
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[API] A pedir envio UDP para Rover 2...
-[ENVIO] Para Rover-Beta (('10.0.2.20', 6002)) | Cmd: '{"id": "M-002", "tarefa": "Fotografia de Alta Resolucao", "duracao": "40"}' | Seq: 103
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[TIMEOUT] Rover-Beta nao respondeu. A retransmitir (1/5)...                     
-[ACK-RX] Rover-Beta confirmou recepcao do Seq 103!                              
-[MISSAO] [Rover-Beta] [Rover-Beta] STARTED: Fotografia de Alta Resolucao        
-   [ACK-TX] Confirmei INICIO de missao                                          
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 96%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 86%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 76%
-[FOTO] [Rover-Beta] Frag 'M-002' | Seq 115 | 250B | MORE_FRAGS (1)              
-   [ACK-TX] [Rover-Beta] Confirmei fragmento 115                                
-[FOTO] [Rover-Beta] Frag 'M-002' | Seq 116 | 250B | MORE_FRAGS (1)              
-   [ACK-TX] [Rover-Beta] Confirmei fragmento 116                                
-[FOTO] [Rover-Beta] Frag 'M-002' | Seq 117 | 225B | MORE_FRAGS (0)              
-   [ACK-TX] [Rover-Beta] Confirmei fragmento 117                                
-[FIM] [Rover-Beta] Foto 'M-002' recebida com sucesso!                           
-[FOTO] [Rover-Beta] Frag 'M-002' | Seq 117 | 225B | MORE_FRAGS (0)              
-   [ACK-TX] [Rover-Beta] Confirmei fragmento 117                                
-[FIM] [Rover-Beta] Foto 'M-002' recebida com sucesso!                           
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 66%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 56%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 46%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
-[MISSAO] [Rover-Beta] [Rover-Beta] COMPLETED: Fotografia de Alta Resolucao      
-   [ACK-TX] Confirmei FIM de missao                                             
- [TCP] Rover 2: 38%
-[DUPLICADO] [Rover-Beta] Seq 127 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 38%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 38%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[API] A pedir envio UDP para Rover 2...
-[ENVIO] Para Rover-Beta (('10.0.2.20', 6002)) | Cmd: 'CMD:CHARGE' | Seq: 104    
-[ACK-RX] Rover-Beta confirmou recepcao do Seq 104!                              
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 39%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: CHARGING'      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 2: 44%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 49%
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 2: 54%
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 59%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 2: 64%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 69%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 74%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 79%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 2: 84%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 89%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 3: 100%
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 94%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 99%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: CHARGING'      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
- [TCP] Rover 1: 100%
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: CHARGING'      
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 2: 100%
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
-[DUPLICADO] [Rover-Beta] Seq 129 ignorado.                                      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
- [TCP] Rover 3: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: CHARGING'      
- [TCP] Rover 1: 100%
- [TCP] Rover 2: 100%
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: CHARGING'      
-[DUPLICADO] [Rover-Alpha] Seq 103 ignorado.                                     
-[DUPLICADO] [Rover-Beta] Seq 128 ignorado.                                      
- [TCP] Rover 3: 100%
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
- [TCP] Rover 1: 100%
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: CHARGING'      
- [TCP] Rover 2: 100%
-   [ACK-TX] [Rover-Beta] Confirmei estado: '[Rover-Beta] STATUS: IDLE'          
