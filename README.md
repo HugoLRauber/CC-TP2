@@ -152,3 +152,18 @@ You can verify the system's robustness by applying "Link Effects" in CORE:
 <p align="center">
   <i>Developed for Computer Networks - 2025/2026</i>
 </p>
+
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+See the [LICENSE](LICENSE) file for more details.
+
+---
+
+<p align="center">
+  <i>Developed for Computer Networks - 2025/2026</i>
+</p>
